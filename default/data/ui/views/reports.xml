@@ -1,0 +1,77 @@
+<dashboard version="1.1" theme="dark">
+    <label>Reports - Analytics &amp; Business Intelligence</label>
+    <description>Comprehensive reporting dashboard for healthcare analytics, KPI tracking, and business intelligence</description>
+    
+    <!-- Dashboard Controls -->
+    <fieldset submitButton="true" autoRun="true">
+        <input type="time" token="time_picker">
+            <label>Time Range</label>
+            <default>
+                <earliest>-30d@d</earliest>
+                <latest>now</latest>
+            </default>
+        </input>
+        
+        <input type="dropdown" token="report_type">
+            <label>Report Type</label>
+            <choice value="*">All Reports</choice>
+            <choice value="financial">Financial</choice>
+            <choice value="operational">Operational</choice>
+            <choice value="clinical">Clinical</choice>
+            <choice value="quality">Quality</choice>
+            <default>*</default>
+        </input>
+        
+        <input type="dropdown" token="frequency">
+            <label>Frequency</label>
+            <choice value="daily">Daily</choice>
+            <choice value="weekly">Weekly</choice>
+            <choice value="monthly">Monthly</choice>
+            <choice value="quarterly">Quarterly</choice>
+            <default>monthly</default>
+        </input>
+    </fieldset>
+    
+    <!-- Main React Application Container -->
+    <row>
+        <panel>
+            <html>
+                <div id="neocare360-reports-app" style="min-height: 800px;">
+                    <!-- React Reports Component will be mounted here -->
+                    <div class="loading-placeholder" style="text-align: center; padding: 100px;">
+                        <h3>📊 Loading Reports Dashboard...</h3>
+                        <p>Initializing healthcare analytics and reporting</p>
+                    </div>
+                </div>
+                
+                <!-- Load React Application -->
+                <script src="/static/app/neocare360/build/js/vendors.js"></script>
+                <script src="/static/app/neocare360/build/js/common.js"></script>
+                <script src="/static/app/neocare360/build/js/main.js"></script>
+                <script>
+                    // Wait for NeoCare360 to be available and initialize
+                    function initNeoCare360Reports() {
+                        if (window.NeoCare360 &amp;&amp; window.NeoCare360.mount) {
+                            console.log('Initializing NeoCare360 Reports...');
+                            window.NeoCare360.mount('neocare360-reports-app', {
+                                reportType: '$report_type$',
+                                frequency: '$frequency$',
+                                timeRange: {
+                                    earliest: '$time_picker.earliest$',
+                                    latest: '$time_picker.latest$'
+                                },
+                                initialView: 'reports'
+                            });
+                        } else {
+                            console.log('NeoCare360 not ready, retrying in 200ms...');
+                            setTimeout(initNeoCare360Reports, 200);
+                        }
+                    }
+                    
+                    // Start initialization
+                    setTimeout(initNeoCare360Reports, 100);
+                </script>
+            </html>
+        </panel>
+    </row>
+</dashboard>

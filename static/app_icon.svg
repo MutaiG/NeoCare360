@@ -1,0 +1,18 @@
+<svg width="36" height="36" viewBox="0 0 36 36" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="18" cy="18" r="16" fill="#1976D2" stroke="#1565C0" stroke-width="2"/>
+  
+  <!-- Hospital cross (medical symbol) -->
+  <rect x="14" y="8" width="8" height="20" fill="white" rx="1"/>
+  <rect x="8" y="14" width="20" height="8" fill="white" rx="1"/>
+  
+  <!-- Heart rate line (healthcare analytics theme) -->
+  <path d="M4 28 L8 28 L10 24 L12 32 L14 20 L16 28 L32 28" 
+        stroke="#E3F2FD" 
+        stroke-width="1.5" 
+        fill="none" 
+        opacity="0.8"/>
+  
+  <!-- Small analytics dot -->
+  <circle cx="28" cy="10" r="2" fill="#4CAF50"/>
+</svg>

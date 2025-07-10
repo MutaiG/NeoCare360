@@ -1,0 +1,65 @@
+<dashboard version="1.1" theme="dark">
+    <label>Clinical KPIs - Performance Metrics</label>
+    <description>Clinical Key Performance Indicators dashboard for healthcare quality metrics and performance tracking</description>
+    
+    <fieldset submitButton="true" autoRun="true">
+        <input type="time" token="time_picker">
+            <label>Time Range</label>
+            <default>
+                <earliest>-30d@d</earliest>
+                <latest>now</latest>
+            </default>
+        </input>
+        
+        <input type="dropdown" token="department_filter">
+            <label>Department</label>
+            <choice value="*">All Departments</choice>
+            <choice value="emergency">Emergency</choice>
+            <choice value="icu">ICU</choice>
+            <choice value="surgery">Surgery</choice>
+            <choice value="general">General Medicine</choice>
+            <choice value="pediatrics">Pediatrics</choice>
+            <default>*</default>
+        </input>
+    </fieldset>
+    
+    <!-- React Clinical KPIs Component -->
+    <row>
+        <panel>
+            <html>
+                <div id="neocare360-clinical-kpis-app" style="min-height: 700px;">
+                    <div class="loading-placeholder" style="text-align: center; padding: 50px;">
+                        <h3>📊 Loading Clinical KPIs...</h3>
+                        <p>Initializing performance metrics dashboard</p>
+                    </div>
+                </div>
+                
+                                <script src="/static/app/neocare360/build/js/vendors.js"></script>
+                <script src="/static/app/neocare360/build/js/common.js"></script>
+                <script src="/static/app/neocare360/build/js/main.js"></script>
+                <script>
+                    // Wait for NeoCare360 to be available and initialize
+                                        function initNeoCare360ClinicalKPIs() {
+                        if (window.NeoCare360 &amp;&amp; window.NeoCare360.mount) {
+                            console.log('Initializing NeoCare360 Clinical KPIs...');
+                            window.NeoCare360.mount('neocare360-clinical-kpis-app', {
+                                departmentFilter: '$department_filter$',
+                                timeRange: {
+                                    earliest: '$time_picker.earliest$',
+                                    latest: '$time_picker.latest$'
+                                },
+                                initialView: 'clinical_kpis'
+                            });
+                        } else {
+                            console.log('NeoCare360 not ready, retrying in 200ms...');
+                            setTimeout(initNeoCare360ClinicalKPIs, 200);
+                        }
+                    }
+
+                    // Start initialization
+                    setTimeout(initNeoCare360ClinicalKPIs, 100);
+                </script>
+            </html>
+        </panel>
+    </row>
+</dashboard>

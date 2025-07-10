@@ -1,0 +1,76 @@
+<dashboard version="1.1" theme="dark">
+    <label>Patient Throughput - Flow &amp; Capacity Analytics</label>
+    <description>Patient flow analysis dashboard tracking admissions, discharges, transfers, and hospital capacity utilization</description>
+    
+    <!-- Dashboard Controls -->
+    <fieldset submitButton="true" autoRun="true">
+        <input type="time" token="time_picker">
+            <label>Time Range</label>
+            <default>
+                <earliest>-24h@h</earliest>
+                <latest>now</latest>
+            </default>
+        </input>
+        
+        <input type="dropdown" token="flow_type">
+            <label>Flow Type</label>
+            <choice value="*">All Flows</choice>
+            <choice value="admissions">Admissions</choice>
+            <choice value="discharges">Discharges</choice>
+            <choice value="transfers">Transfers</choice>
+            <default>*</default>
+        </input>
+        
+        <input type="dropdown" token="department_filter">
+            <label>Department</label>
+            <choice value="*">All Departments</choice>
+            <choice value="emergency">Emergency</choice>
+            <choice value="icu">ICU</choice>
+            <choice value="surgery">Surgery</choice>
+            <default>*</default>
+        </input>
+    </fieldset>
+    
+    <!-- Main React Application Container -->
+    <row>
+        <panel>
+            <html>
+                <div id="neocare360-patient-throughput-app" style="min-height: 800px;">
+                    <!-- React Patient Throughput Component will be mounted here -->
+                    <div class="loading-placeholder" style="text-align: center; padding: 100px;">
+                        <h3>🔄 Loading Patient Throughput...</h3>
+                        <p>Initializing patient flow analytics dashboard</p>
+                    </div>
+                </div>
+                
+                <!-- Load React Application -->
+                <script src="/static/app/neocare360/build/js/vendors.js"></script>
+                <script src="/static/app/neocare360/build/js/common.js"></script>
+                <script src="/static/app/neocare360/build/js/main.js"></script>
+                <script>
+                    // Wait for NeoCare360 to be available and initialize
+                    function initNeoCare360PatientThroughput() {
+                        if (window.NeoCare360 &amp;&amp; window.NeoCare360.mount) {
+                            console.log('Initializing NeoCare360 Patient Throughput...');
+                            window.NeoCare360.mount('neocare360-patient-throughput-app', {
+                                flowType: '$flow_type$',
+                                departmentFilter: '$department_filter$',
+                                timeRange: {
+                                    earliest: '$time_picker.earliest$',
+                                    latest: '$time_picker.latest$'
+                                },
+                                initialView: 'patient_throughput'
+                            });
+                        } else {
+                            console.log('NeoCare360 not ready, retrying in 200ms...');
+                            setTimeout(initNeoCare360PatientThroughput, 200);
+                        }
+                    }
+                    
+                    // Start initialization
+                    setTimeout(initNeoCare360PatientThroughput, 100);
+                </script>
+            </html>
+        </panel>
+    </row>
+</dashboard>

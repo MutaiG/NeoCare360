@@ -1,0 +1,64 @@
+<dashboard version="1.1" theme="dark">
+    <label>Patient Monitoring - Real-time Patient Care</label>
+    <description>Real-time patient monitoring dashboard with vital signs, bed management, and clinical alerts</description>
+    
+    <fieldset submitButton="true" autoRun="true">
+        <input type="time" token="time_picker">
+            <label>Time Range</label>
+            <default>
+                <earliest>-24h@h</earliest>
+                <latest>now</latest>
+            </default>
+        </input>
+        
+        <input type="dropdown" token="ward_filter">
+            <label>Ward</label>
+            <choice value="*">All Wards</choice>
+            <choice value="icu">ICU</choice>
+            <choice value="emergency">Emergency</choice>
+            <choice value="general">General Medicine</choice>
+            <choice value="surgery">Surgery</choice>
+            <default>*</default>
+        </input>
+    </fieldset>
+    
+    <!-- React Patient Monitoring Component -->
+    <row>
+        <panel>
+            <html>
+                <div id="neocare360-patient-monitoring-app" style="min-height: 600px;">
+                    <div class="loading-placeholder" style="text-align: center; padding: 50px;">
+                        <h3>🛏️ Loading Patient Monitoring...</h3>
+                        <p>Initializing real-time patient care dashboard</p>
+                    </div>
+                </div>
+                
+                                <script src="/static/app/neocare360/build/js/vendors.js"></script>
+                <script src="/static/app/neocare360/build/js/common.js"></script>
+                <script src="/static/app/neocare360/build/js/main.js"></script>
+                <script>
+                    // Wait for NeoCare360 to be available and initialize
+                                        function initNeoCare360PatientMonitoring() {
+                        if (window.NeoCare360 &amp;&amp; window.NeoCare360.mount) {
+                            console.log('Initializing NeoCare360 Patient Monitoring...');
+                            window.NeoCare360.mount('neocare360-patient-monitoring-app', {
+                                wardFilter: '$ward_filter$',
+                                timeRange: {
+                                    earliest: '$time_picker.earliest$',
+                                    latest: '$time_picker.latest$'
+                                },
+                                initialView: 'patient_monitoring'
+                            });
+                        } else {
+                            console.log('NeoCare360 not ready, retrying in 200ms...');
+                            setTimeout(initNeoCare360PatientMonitoring, 200);
+                        }
+                    }
+
+                    // Start initialization
+                    setTimeout(initNeoCare360PatientMonitoring, 100);
+                </script>
+            </html>
+        </panel>
+    </row>
+</dashboard>

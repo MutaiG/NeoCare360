@@ -1,0 +1,19 @@
+<view template="dashboard">
+  <label>NeoCare360</label>
+  <row>
+    <panel>
+      <html>
+        <div style="text-align: center; padding: 20px;">
+          <h2>🏥 NeoCare360 - Clinical Intelligence Hub</h2>
+          <p>Access the full application:</p>
+          <p>
+            <a href="/static/app/NeoCare360/index.html" target="_blank" 
+               style="display: inline-block; padding: 10px 20px; background: #0984e3; color: white; text-decoration: none; border-radius: 5px;">
+              Launch NeoCare360 Dashboard
+            </a>
+          </p>
+        </div>
+      </html>
+    </panel>
+  </row>
+</view>

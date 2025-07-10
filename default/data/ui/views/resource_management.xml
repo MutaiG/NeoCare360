@@ -1,0 +1,76 @@
+<dashboard version="1.1" theme="dark">
+    <label>Resource Management - Hospital Resources &amp; Capacity</label>
+    <description>Comprehensive resource management dashboard for tracking hospital capacity, equipment, staff allocation, and supply chain management</description>
+    
+    <!-- Dashboard Controls -->
+    <fieldset submitButton="true" autoRun="true">
+        <input type="time" token="time_picker">
+            <label>Time Range</label>
+            <default>
+                <earliest>-7d@d</earliest>
+                <latest>now</latest>
+            </default>
+        </input>
+        
+        <input type="dropdown" token="resource_filter">
+            <label>Resource Type</label>
+            <choice value="*">All Resources</choice>
+            <choice value="beds">Beds</choice>
+            <choice value="equipment">Equipment</choice>
+            <choice value="supplies">Supplies</choice>
+            <choice value="staff">Staff</choice>
+            <default>*</default>
+        </input>
+        
+        <input type="dropdown" token="hospital_filter">
+            <label>Hospital</label>
+            <choice value="*">All Hospitals</choice>
+            <choice value="knh">Kenyatta National Hospital</choice>
+            <choice value="mnh">Moi National Hospital</choice>
+            <default>*</default>
+        </input>
+    </fieldset>
+    
+    <!-- Main React Application Container -->
+    <row>
+        <panel>
+            <html>
+                <div id="neocare360-resource-management-app" style="min-height: 800px;">
+                    <!-- React Resource Management Component will be mounted here -->
+                    <div class="loading-placeholder" style="text-align: center; padding: 100px;">
+                        <h3>📦 Loading Resource Management...</h3>
+                        <p>Initializing hospital resource tracking dashboard</p>
+                    </div>
+                </div>
+                
+                <!-- Load React Application -->
+                <script src="/static/app/neocare360/build/js/vendors.js"></script>
+                <script src="/static/app/neocare360/build/js/common.js"></script>
+                <script src="/static/app/neocare360/build/js/main.js"></script>
+                <script>
+                    // Wait for NeoCare360 to be available and initialize
+                    function initNeoCare360ResourceManagement() {
+                        if (window.NeoCare360 &amp;&amp; window.NeoCare360.mount) {
+                            console.log('Initializing NeoCare360 Resource Management...');
+                            window.NeoCare360.mount('neocare360-resource-management-app', {
+                                resourceFilter: '$resource_filter$',
+                                hospitalFilter: '$hospital_filter$',
+                                timeRange: {
+                                    earliest: '$time_picker.earliest$',
+                                    latest: '$time_picker.latest$'
+                                },
+                                initialView: 'resource_management'
+                            });
+                        } else {
+                            console.log('NeoCare360 not ready, retrying in 200ms...');
+                            setTimeout(initNeoCare360ResourceManagement, 200);
+                        }
+                    }
+                    
+                    // Start initialization
+                    setTimeout(initNeoCare360ResourceManagement, 100);
+                </script>
+            </html>
+        </panel>
+    </row>
+</dashboard>

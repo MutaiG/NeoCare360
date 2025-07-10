@@ -1,0 +1,56 @@
+{
+  "name": "@splunk/neocare-360",
+  "version": "2.1.0",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "NODE_ENV=production webpack --mode=production",
+    "build:dev": "webpack --mode=development",
+    "build:prod": "NODE_ENV=production webpack --config webpack.prod.config.js",
+    "eslint": "eslint src --ext \".js,.jsx\"",
+    "eslint:ci": "yarn run eslint -f junit -o test-reports/lint-results.xml",
+    "eslint:fix": "eslint src --ext \".js, .jsx\" --fix",
+    "lint": "yarn run eslint && yarn run stylelint",
+    "lint:ci": "yarn run eslint:ci && yarn run stylelint",
+    "start": "webpack serve",
+    "start:dev": "NODE_ENV=development webpack serve",
+    "stylelint": "stylelint \"src/**/*.{js,jsx}\" --config stylelint.config.js"
+  },
+  "dependencies": {
+    "axios": "^1.10.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "styled-components": "^5.3.10"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "@babel/preset-react": "^7.27.1",
+    "babel-loader": "^10.0.0",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.3.0",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.8.0",
+    "eslint": "^8.0.0",
+    "eslint-config-airbnb": "^19.0.0",
+    "eslint-config-prettier": "^8.0.0",
+    "eslint-import-resolver-webpack": "^0.13.4",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-react": "^7.33.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "html-webpack-plugin": "^5.5.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "shelljs": "^0.8.5",
+    "style-loader": "^3.3.0",
+    "styled-components": "^5.3.10",
+    "stylelint": "^15.11.0",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1",
+    "webpack-merge": "^5.9.0"
+  },
+  "engines": {
+    "node": ">=14"
+  }
+}

@@ -1,0 +1,77 @@
+<dashboard version="1.1" theme="dark">
+    <label>Alerts - Clinical Alerts &amp; Notifications</label>
+    <description>Critical alerts dashboard for monitoring clinical alarms, system notifications, and emergency alerts</description>
+    
+    <!-- Dashboard Controls -->
+    <fieldset submitButton="true" autoRun="true">
+        <input type="time" token="time_picker">
+            <label>Time Range</label>
+            <default>
+                <earliest>-4h@h</earliest>
+                <latest>now</latest>
+            </default>
+        </input>
+        
+        <input type="dropdown" token="severity_filter">
+            <label>Severity</label>
+            <choice value="*">All Severities</choice>
+            <choice value="critical">Critical</choice>
+            <choice value="high">High</choice>
+            <choice value="medium">Medium</choice>
+            <choice value="low">Low</choice>
+            <default>*</default>
+        </input>
+        
+        <input type="dropdown" token="alert_type">
+            <label>Alert Type</label>
+            <choice value="*">All Types</choice>
+            <choice value="clinical">Clinical</choice>
+            <choice value="technical">Technical</choice>
+            <choice value="security">Security</choice>
+            <default>*</default>
+        </input>
+    </fieldset>
+    
+    <!-- Main React Application Container -->
+    <row>
+        <panel>
+            <html>
+                <div id="neocare360-alerts-app" style="min-height: 800px;">
+                    <!-- React Alerts Component will be mounted here -->
+                    <div class="loading-placeholder" style="text-align: center; padding: 100px;">
+                        <h3>🚨 Loading Alerts Dashboard...</h3>
+                        <p>Initializing clinical alerts monitoring system</p>
+                    </div>
+                </div>
+                
+                <!-- Load React Application -->
+                <script src="/static/app/neocare360/build/js/vendors.js"></script>
+                <script src="/static/app/neocare360/build/js/common.js"></script>
+                <script src="/static/app/neocare360/build/js/main.js"></script>
+                <script>
+                    // Wait for NeoCare360 to be available and initialize
+                    function initNeoCare360Alerts() {
+                        if (window.NeoCare360 &amp;&amp; window.NeoCare360.mount) {
+                            console.log('Initializing NeoCare360 Alerts...');
+                            window.NeoCare360.mount('neocare360-alerts-app', {
+                                severityFilter: '$severity_filter$',
+                                alertType: '$alert_type$',
+                                timeRange: {
+                                    earliest: '$time_picker.earliest$',
+                                    latest: '$time_picker.latest$'
+                                },
+                                initialView: 'alerts'
+                            });
+                        } else {
+                            console.log('NeoCare360 not ready, retrying in 200ms...');
+                            setTimeout(initNeoCare360Alerts, 200);
+                        }
+                    }
+                    
+                    // Start initialization
+                    setTimeout(initNeoCare360Alerts, 100);
+                </script>
+            </html>
+        </panel>
+    </row>
+</dashboard>

@@ -1,0 +1,69 @@
+# NeoCare360 App Metadata and Permissions
+# Defines object permissions and access controls for the healthcare dashboard
+
+# App-level permissions
+[]
+access = read : [ * ], write : [ sc_admin, power ]
+export = system
+
+# View permissions - accessible to all authenticated users
+[views]
+access = read : [ * ], write : [ sc_admin, power ]
+export = system
+
+[views/overview]
+access = read : [ * ], write : [ sc_admin, power ]
+export = system
+
+[views/patient_monitoring] 
+access = read : [ nurse, physician, icu_specialist, sc_admin, power ], write : [ sc_admin, power ]
+export = system
+
+[views/icu_command_center]
+access = read : [ icu_specialist, physician, sc_admin, power ], write : [ sc_admin, power ]
+export = system
+
+[views/clinical_kpis]
+access = read : [ chief_medical_officer, sc_admin, power ], write : [ sc_admin, power ]
+export = system
+
+[views/resource_management]
+access = read : [ hospital_sc_admin, sc_admin, power ], write : [ sc_admin, power ]
+export = system
+
+[views/alerts]
+access = read : [ * ], write : [ sc_admin, power ]
+export = system
+
+[views/compliance]
+access = read : [ compliance_officer, sc_admin, power ], write : [ sc_admin, power ]
+export = system
+
+[views/reports]
+access = read : [ chief_medical_officer, sc_admin, power ], write : [ sc_admin, power ]
+export = system
+
+# Navigation permissions
+[data/ui/nav]
+access = read : [ * ], write : [ sc_admin ]
+export = system
+
+# Search permissions for healthcare data
+[savedsearches]
+access = read : [ * ], write : [ sc_admin, power ]
+export = system
+
+# Static files permissions
+[static]
+access = read : [ * ], write : [ sc_admin ]
+export = system
+
+# Lookup files permissions
+[lookups]
+access = read : [ * ], write : [ sc_admin, power ]
+export = system
+
+# App scripts permissions
+[bin]
+access = read : [ sc_admin, power ], write : [ sc_admin ]
+export = system

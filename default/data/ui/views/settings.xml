@@ -1,0 +1,66 @@
+<dashboard version="1.1" theme="dark">
+    <label>Settings - System Configuration &amp; Preferences</label>
+    <description>System settings and configuration dashboard for NeoCare360 application preferences and user management</description>
+    
+    <!-- Dashboard Controls -->
+    <fieldset submitButton="true" autoRun="true">
+        <input type="dropdown" token="settings_category">
+            <label>Settings Category</label>
+            <choice value="*">All Settings</choice>
+            <choice value="user">User Preferences</choice>
+            <choice value="system">System Configuration</choice>
+            <choice value="security">Security Settings</choice>
+            <choice value="notifications">Notifications</choice>
+            <default>*</default>
+        </input>
+        
+        <input type="dropdown" token="user_role">
+            <label>User Role</label>
+            <choice value="*">All Roles</choice>
+            <choice value="admin">Administrator</choice>
+            <choice value="physician">Physician</choice>
+            <choice value="nurse">Nurse</choice>
+            <choice value="technician">Technician</choice>
+            <default>*</default>
+        </input>
+    </fieldset>
+    
+    <!-- Main React Application Container -->
+    <row>
+        <panel>
+            <html>
+                <div id="neocare360-settings-app" style="min-height: 800px;">
+                    <!-- React Settings Component will be mounted here -->
+                    <div class="loading-placeholder" style="text-align: center; padding: 100px;">
+                        <h3>⚙️ Loading Settings Dashboard...</h3>
+                        <p>Initializing system configuration interface</p>
+                    </div>
+                </div>
+                
+                <!-- Load React Application -->
+                <script src="/static/app/neocare360/build/js/vendors.js"></script>
+                <script src="/static/app/neocare360/build/js/common.js"></script>
+                <script src="/static/app/neocare360/build/js/main.js"></script>
+                <script>
+                    // Wait for NeoCare360 to be available and initialize
+                    function initNeoCare360Settings() {
+                        if (window.NeoCare360 &amp;&amp; window.NeoCare360.mount) {
+                            console.log('Initializing NeoCare360 Settings...');
+                            window.NeoCare360.mount('neocare360-settings-app', {
+                                settingsCategory: '$settings_category$',
+                                userRole: '$user_role$',
+                                initialView: 'settings'
+                            });
+                        } else {
+                            console.log('NeoCare360 not ready, retrying in 200ms...');
+                            setTimeout(initNeoCare360Settings, 200);
+                        }
+                    }
+                    
+                    // Start initialization
+                    setTimeout(initNeoCare360Settings, 100);
+                </script>
+            </html>
+        </panel>
+    </row>
+</dashboard>

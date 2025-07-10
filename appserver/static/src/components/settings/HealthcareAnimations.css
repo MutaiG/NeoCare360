@@ -1,0 +1,228 @@
+/* NeoCare360 Healthcare Animation Enhancements */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* Healthcare-specific pulse animation for vital signs */
+@keyframes heartbeat {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    14% {
+        transform: scale(1.1);
+    }
+    28% {
+        transform: scale(1);
+    }
+    42% {
+        transform: scale(1.05);
+    }
+    56% {
+        transform: scale(1);
+    }
+}
+
+/* Breathing animation for patient monitors */
+@keyframes breathe {
+    0%,
+    100% {
+        opacity: 0.7;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.02);
+    }
+}
+
+/* Data sync pulse */
+@keyframes dataPulse {
+    0%,
+    100% {
+        background-color: var(--status-success);
+        transform: scale(1);
+    }
+    50% {
+        background-color: var(--color-primary);
+        transform: scale(1.1);
+    }
+}
+
+/* Alert notification animation */
+@keyframes alertGlow {
+    0%,
+    100% {
+        box-shadow: 0 0 5px var(--status-warning);
+    }
+    50% {
+        box-shadow: 0 0 20px var(--status-warning), 0 0 30px var(--status-warning);
+    }
+}
+
+/* Critical status animation */
+@keyframes criticalBlink {
+    0%,
+    50% {
+        background-color: var(--status-error);
+        opacity: 1;
+    }
+    51%,
+    100% {
+        background-color: transparent;
+        opacity: 0.3;
+    }
+}
+
+/* Smooth medical slide-in */
+@keyframes medicalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Healthcare status indicator */
+.health-status-indicator {
+    position: relative;
+    display: inline-block;
+}
+
+.health-status-indicator.operational::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background: var(--status-success);
+    border-radius: 50%;
+    animation: dataPulse 2s infinite;
+}
+
+.health-status-indicator.warning::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background: var(--status-warning);
+    border-radius: 50%;
+    animation: alertGlow 1.5s infinite;
+}
+
+.health-status-indicator.critical::after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background: var(--status-error);
+    border-radius: 50%;
+    animation: criticalBlink 1s infinite;
+}
+
+/* Enhanced focus states for accessibility */
+.healthcare-interactive:focus {
+    outline: 3px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: 8px;
+}
+
+/* Medical data cards */
+.medical-card {
+    animation: medicalSlideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.medical-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(46, 125, 50, 0.15);
+}
+
+/* Patient vitals animations */
+.vital-heart-rate {
+    animation: heartbeat 1.2s infinite;
+    color: var(--vital-heart-rate);
+}
+
+.vital-breathing {
+    animation: breathe 3s infinite ease-in-out;
+    color: var(--vital-oxygen);
+}
+
+/* Settings section specific */
+.settings-section-enter {
+    animation: medicalSlideIn 0.8s ease-out;
+}
+
+.settings-toggle-active {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    box-shadow: 0 0 15px rgba(46, 125, 50, 0.4);
+}
+
+/* Healthcare loading states */
+.healthcare-loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.healthcare-loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(46, 125, 50, 0.2), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .healthcare-interactive:focus {
+        transition: none;
+    }
+}
+
+/* Dark mode specific enhancements */
+[data-theme='dark'] .medical-card {
+    border: 1px solid rgba(102, 187, 106, 0.2);
+}
+
+[data-theme='dark'] .medical-card:hover {
+    border-color: rgba(102, 187, 106, 0.4);
+    background: linear-gradient(135deg, rgba(102, 187, 106, 0.05), rgba(38, 198, 218, 0.05));
+}
+
+/* Light mode specific enhancements */
+[data-theme='light'] .medical-card {
+    border: 1px solid rgba(46, 125, 50, 0.1);
+}
+
+[data-theme='light'] .medical-card:hover {
+    border-color: rgba(46, 125, 50, 0.3);
+    background: linear-gradient(135deg, rgba(46, 125, 50, 0.02), rgba(0, 172, 193, 0.02));
+}

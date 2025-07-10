@@ -1,0 +1,155 @@
+<dashboard version="1.1" theme="dark">
+    <label>Dashboard Overview - Clinical Intelligence Hub</label>
+    <description>Comprehensive healthcare dashboard showing key metrics, patient monitoring, and hospital performance indicators</description>
+    
+    <!-- Dashboard Controls -->
+    <fieldset submitButton="true" autoRun="true">
+        <input type="time" token="time_picker">
+            <label>Time Range</label>
+            <default>
+                <earliest>-7d@d</earliest>
+                <latest>now</latest>
+            </default>
+        </input>
+        
+        <input type="dropdown" token="hospital_filter">
+            <label>Hospital</label>
+            <choice value="*">All Hospitals</choice>
+            <choice value="knh">Kenyatta National Hospital</choice>
+            <choice value="mnh">Moi National Hospital</choice>
+            <default>*</default>
+        </input>
+        
+        <input type="dropdown" token="county_filter">
+            <label>County</label>
+            <choice value="*">All Counties</choice>
+            <choice value="nairobi">Nairobi</choice>
+            <choice value="kiambu">Kiambu</choice>
+            <choice value="nakuru">Nakuru</choice>
+            <default>*</default>
+        </input>
+    </fieldset>
+    
+    <!-- Main React Application Container -->
+    <row>
+        <panel>
+            <html>
+                <div id="neocare360-overview-app" style="min-height: 800px;">
+                    <!-- React Overview Component will be mounted here -->
+                    <div class="loading-placeholder" style="text-align: center; padding: 100px;">
+                        <h3>🏥 Loading NeoCare360 Dashboard...</h3>
+                        <p>Initializing healthcare intelligence platform</p>
+                    </div>
+                </div>
+                
+                                                <!-- Load React Application -->
+                                <script>
+                    console.log('🔍 SPLUNK CLOUD: Starting NeoCare360 initialization...');
+
+                    // Splunk Cloud compatible script loading using require.js
+                    if (typeof require !== 'undefined') {
+                        console.log('✅ SPLUNK CLOUD: Using Splunk require.js system');
+                        require([
+                            '/static/app/neocare360/build/js/vendors.js',
+                            '/static/app/neocare360/build/js/common.js',
+                            '/static/app/neocare360/build/js/main.js'
+                        ], function() {
+                            console.log('✅ SPLUNK CLOUD: Scripts loaded via require.js');
+                            initializeNeoCare360();
+                        }, function(error) {
+                            console.error('❌ SPLUNK CLOUD: require.js failed:', error);
+                            fallbackInitialization();
+                        });
+                    } else {
+                        console.log('⚠️ SPLUNK CLOUD: No require.js, using fallback');
+                        fallbackInitialization();
+                    }
+
+                    function initializeNeoCare360() {
+                        console.log('🔍 SPLUNK CLOUD: Checking window.NeoCare360...');
+
+                        function tryMount() {
+                            if (window.NeoCare360 &amp;&amp; window.NeoCare360.mount) {
+                                console.log('✅ SPLUNK CLOUD: Mounting NeoCare360 Overview...');
+
+                                // Clear loading placeholder
+                                const container = document.getElementById('neocare360-overview-app');
+                                if (container) {
+                                    container.innerHTML = '&lt;div style="padding: 20px; text-align: center; color: green;"&gt;🚀 Launching NeoCare360...&lt;/div&gt;';
+                                }
+
+                                window.NeoCare360.mount('neocare360-overview-app', {
+                                    hospitalFilter: '$hospital_filter$',
+                                    countyFilter: '$county_filter$',
+                                    timeRange: {
+                                        earliest: '$time_picker.earliest$',
+                                        latest: '$time_picker.latest$'
+                                    },
+                                    initialView: 'overview'
+                                });
+                            } else {
+                                console.log('⏳ SPLUNK CLOUD: NeoCare360 not ready, retrying...');
+                                setTimeout(tryMount, 300);
+                            }
+                        }
+
+                        setTimeout(tryMount, 100);
+                    }
+
+                    function fallbackInitialization() {
+                        console.log('🔄 SPLUNK CLOUD: Using fallback initialization');
+                        const container = document.getElementById('neocare360-overview-app');
+                        if (container) {
+                            container.innerHTML = '&lt;div style="padding: 40px; text-align: center; background: #f0f0f0; border-radius: 8px; margin: 20px;"&gt;' +
+                                '&lt;h2 style="color: #0066cc;"&gt;🏥 NeoCare360 Healthcare Dashboard&lt;/h2&gt;' +
+                                '&lt;p&gt;Clinical Intelligence Hub for Healthcare Professionals&lt;/p&gt;' +
+                                '&lt;div style="margin: 20px 0; padding: 20px; background: white; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"&gt;' +
+                                '&lt;h3&gt;📊 Dashboard Overview&lt;/h3&gt;' +
+                                '&lt;p&gt;Hospital: ' + '$hospital_filter$' + ' | County: ' + '$county_filter$' + '&lt;/p&gt;' +
+                                '&lt;p&gt;Time Range: ' + '$time_picker.earliest$' + ' to ' + '$time_picker.latest$' + '&lt;/p&gt;' +
+                                '&lt;/div&gt;' +
+                                '&lt;p style="color: #666; font-size: 12px;"&gt;React components loading in background...&lt;/p&gt;' +
+                                '&lt;/div&gt;';
+                        }
+                    }
+                </script>
+            </html>
+        </panel>
+    </row>
+    
+    <!-- Backup Splunk Native Panels (if React fails) -->
+    <row depends="$show_native_panels$">
+        <panel>
+            <title>Patient Admissions (Last 7 Days)</title>
+            <chart>
+                <search>
+                    <query>
+                        index=healthcare source=*admissions* hospital="$hospital_filter$" county="$county_filter$" 
+                        | timechart span=1d count by hospital
+                        | fillnull value=0
+                    </query>
+                    <earliest>$time_picker.earliest$</earliest>
+                    <latest>$time_picker.latest$</latest>
+                </search>
+                <option name="charting.chart">line</option>
+                <option name="charting.axisTitleX.text">Date</option>
+                <option name="charting.axisTitleY.text">Admissions</option>
+            </chart>
+        </panel>
+        
+        <panel>
+            <title>Critical Alerts</title>
+            <table>
+                <search>
+                    <query>
+                        index=healthcare source=*alerts* severity=critical hospital="$hospital_filter$"
+                        | head 10
+                        | table _time, hospital, alert_type, message, patient_id
+                    </query>
+                    <earliest>$time_picker.earliest$</earliest>
+                    <latest>$time_picker.latest$</latest>
+                </search>
+            </table>
+        </panel>
+    </row>
+</dashboard>

@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "2.0.0",
+  "info": {
+    "title": "NeoCare360",
+    "id": {
+      "group": null,
+      "name": "NeoCare360",
+      "version": "2.1.0"
+    },
+    "author": [
+      {
+        "name": "Gideon Mutai",
+        "email": "support@neocare360.com",
+        "company": "NeoCare360"
+      }
+    ],
+    "releaseDate": "2024-01-17T00:00:00.000Z",
+    "description": "Comprehensive healthcare dashboard for clinical intelligence, patient monitoring, and hospital management.",
+    "classification": {
+      "intendedAudience": "Healthcare Professionals",
+      "categories": ["Healthcare", "Analytics", "Monitoring"],
+      "developmentStatus": "Production/Stable"
+    },
+    "releaseNotes": {
+      "name": null,
+      "text": "./README.md",
+      "uri": null
+    }
+  },
+  "dependencies": null,
+  "tasks": null,
+  "inputGroups": null,
+  "incompatibleApps": null,
+  "platformRequirements": null,
+  "supportedDeployments": [
+    "_standalone",
+    "_distributed"
+  ],
+  "targetWorkloads": null
+}

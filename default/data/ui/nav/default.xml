@@ -1,0 +1,5 @@
+<!-- NeoCare360 Navigation - Minimal nav for React SPA -->
+<nav search_view="search" color="#0984e3">
+    <!-- Single view that loads the React app -->
+    <view name="react_app" default="true" />
+</nav>

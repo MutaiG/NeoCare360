@@ -1,0 +1,79 @@
+<dashboard version="1.1" theme="dark">
+    <label>Patient Vitals - Real-time Vital Signs Monitoring</label>
+    <description>Real-time patient vital signs monitoring dashboard with critical parameter tracking and trend analysis</description>
+    
+    <!-- Dashboard Controls -->
+    <fieldset submitButton="true" autoRun="true">
+        <input type="time" token="time_picker">
+            <label>Time Range</label>
+            <default>
+                <earliest>-1h@h</earliest>
+                <latest>now</latest>
+            </default>
+        </input>
+        
+        <input type="dropdown" token="vital_type">
+            <label>Vital Sign</label>
+            <choice value="*">All Vitals</choice>
+            <choice value="heart_rate">Heart Rate</choice>
+            <choice value="blood_pressure">Blood Pressure</choice>
+            <choice value="temperature">Temperature</choice>
+            <choice value="oxygen_saturation">Oxygen Saturation</choice>
+            <choice value="respiratory_rate">Respiratory Rate</choice>
+            <default>*</default>
+        </input>
+        
+        <input type="dropdown" token="ward_filter">
+            <label>Ward</label>
+            <choice value="*">All Wards</choice>
+            <choice value="icu">ICU</choice>
+            <choice value="cardiac">Cardiac</choice>
+            <choice value="pediatric">Pediatric</choice>
+            <choice value="emergency">Emergency</choice>
+            <default>*</default>
+        </input>
+    </fieldset>
+    
+    <!-- Main React Application Container -->
+    <row>
+        <panel>
+            <html>
+                <div id="neocare360-patient-vitals-app" style="min-height: 800px;">
+                    <!-- React Patient Vitals Component will be mounted here -->
+                    <div class="loading-placeholder" style="text-align: center; padding: 100px;">
+                        <h3>💓 Loading Patient Vitals...</h3>
+                        <p>Initializing real-time vital signs monitoring</p>
+                    </div>
+                </div>
+                
+                <!-- Load React Application -->
+                <script src="/static/app/neocare360/build/js/vendors.js"></script>
+                <script src="/static/app/neocare360/build/js/common.js"></script>
+                <script src="/static/app/neocare360/build/js/main.js"></script>
+                <script>
+                    // Wait for NeoCare360 to be available and initialize
+                    function initNeoCare360PatientVitals() {
+                        if (window.NeoCare360 &amp;&amp; window.NeoCare360.mount) {
+                            console.log('Initializing NeoCare360 Patient Vitals...');
+                            window.NeoCare360.mount('neocare360-patient-vitals-app', {
+                                vitalType: '$vital_type$',
+                                wardFilter: '$ward_filter$',
+                                timeRange: {
+                                    earliest: '$time_picker.earliest$',
+                                    latest: '$time_picker.latest$'
+                                },
+                                initialView: 'patient_vitals'
+                            });
+                        } else {
+                            console.log('NeoCare360 not ready, retrying in 200ms...');
+                            setTimeout(initNeoCare360PatientVitals, 200);
+                        }
+                    }
+                    
+                    // Start initialization
+                    setTimeout(initNeoCare360PatientVitals, 100);
+                </script>
+            </html>
+        </panel>
+    </row>
+</dashboard>
